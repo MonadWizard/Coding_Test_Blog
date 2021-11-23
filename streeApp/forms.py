@@ -5,7 +5,9 @@ from mptt.forms import TreeNodeChoiceField
 class NewPostForm(forms.ModelForm):
     class Meta:
         model = Posts
-        fields = '__all__'
+        #fields = '__all__'
+        fields = ('title', 'detail')
+
 
 
 class NewTagsForm(forms.ModelForm):

@@ -7,8 +7,6 @@ urlpatterns = [
     path('create/', views.createPost, name='createPost'),
     path('update/', views.updatePost, name='updatePost'),
 
-    # path('<slug:post>/', views.post_single, name='post_single'),
-
 ]
 
 

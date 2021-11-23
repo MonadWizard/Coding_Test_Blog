@@ -6,12 +6,26 @@ from .forms import NewTagsForm , NewPostForm
 # Create your views here.
 
 def createPost(request):
+    posts = Posts.objects.all()
     tags = Tags.objects.all()
     post_form = NewPostForm(request.POST or None)
     tag_form = NewTagsForm(request.POST or None)
 
     if post_form.is_valid():
-        post_form.save()
+        if request.method == 'POST':
+            tag_data = (request.POST.get('tags')).split(',')
+            tag_data = list(map(int, tag_data))
+            title = post_form.cleaned_data['title']
+            detail = post_form.cleaned_data['detail']
+
+            posts_add = Posts.objects.create(
+                title = title,
+                detail = detail,
+            )
+            for x in tag_data:
+                posts_add.tags.add(Tags.objects.get(id=x))
+
+        # post_form.save()
         return HttpResponseRedirect(request.path_info)
 
     if tag_form.is_valid():

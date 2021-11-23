@@ -2,14 +2,6 @@ from django.db import models
 
 from mptt.models import MPTTModel, TreeForeignKey
 
-class Posts(models.Model):
-    title = models.CharField(max_length=250)
-    detail = models.TextField(null=True)
-
-
-    def __str__(self):
-        return self.title
-
 
 class Tags(MPTTModel):
     name = models.CharField(max_length=50)
@@ -22,6 +14,19 @@ class Tags(MPTTModel):
     def __str__(self):
         return self.name
 
+    # class Meta:
+    #     db_table = 'tags'
+
+class Posts(models.Model):
+    title = models.CharField(max_length=250)
+    detail = models.TextField(null=True)
+    tags = models.ManyToManyField(Tags)
+
+    def __str__(self):
+        return self.title
+
+    # class Meta:
+    #     db_table = 'posts'
 
 
 

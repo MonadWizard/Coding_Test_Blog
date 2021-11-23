@@ -21,7 +21,8 @@
           <form method="post">
               {% csrf_token %}
               {{ post_form.as_p }}
-              <p id="valueList"></p>
+{#              <p id="valueList" name="tags"></p>#}
+                <input type="hidden" id="tagss" name="tags" value=""></input>
               <input type="submit" value="Save">
           </form>
 
@@ -39,7 +40,7 @@
 {% recursetree tags %}
 
     <div id="{{ node.id }}">
-        <input type="checkbox" id="valueList" name="{{ node.id }}" value="{{ node.name }}" class="checkbox">
+        <input type="checkbox" id="valueList" name="{{ node.name }}" value="{{ node.id }}" class="checkbox">
         {{ node.level }} {{ node.name }}{{ node.id }}
         <button class="btn"  onclick="myFunction({{ node.id }})"><i class="fa fa-plus"></i></button>
     </div>
@@ -60,7 +61,7 @@
 
     {#checkbox#}
     var valueList = document.getElementById('valueList');
-    var text = '<span> you have selected : </span>';
+    var text = '<span > Tags : </span>';
     var listArray = []
 
     var checkboxes = document.querySelectorAll('.checkbox');
@@ -69,16 +70,23 @@
         checkbox.addEventListener('click', function (){
             if(this.checked == true){
                 console.log(this.value);
+                console.log(this.name);
                 listArray.push(this.value);
-                valueList.innerHTML = text + listArray.join(',');
+                valueList.innerHTML = listArray.join(',');
             }
             else {
                 console.log('unchecked')
                 listArray = listArray.filter(e => e!==this.value);
-                valueList.innerHTML =  text + listArray.join(',');
+                valueList.innerHTML = listArray.join(',');
             }
+            {#console.log(valueList)#}
+            console.log(listArray)
+            document.getElementById("tagss").value=listArray
+
         })
     }
+
+
 
 
 
