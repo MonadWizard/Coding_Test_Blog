@@ -1,0 +1,73 @@
+{% load mptt_tags %}
+
+
+{% recursetree tags %}
+
+    <div id="{{ node.id }}">
+        <input type="checkbox" id="valueList" name="{{ node.id }}" value="{{ node.name }}" class="checkbox">
+        {{ node.level }} {{ node.name }}{{ node.id }}
+        <button class="btn"  onclick="myFunction({{ node.id }})"><i class="fa fa-plus"></i></button>
+    </div>
+{#          <label for="{{ node.id }}"> {{ node.name }} </label><br>#}
+
+
+
+    {% if not node.is_leaf_node %}
+        <div class="children" style="padding-left: 20px">
+        {{ children }}
+        </div>
+    {% endif %}
+
+{% endrecursetree %}
+
+
+<script>
+
+    {#checkbox#}
+    var valueList = document.getElementById('valueList');
+    var text = '<span> you have selected : </span>';
+    var listArray = []
+
+    var checkboxes = document.querySelectorAll('.checkbox');
+
+    for (var checkbox of checkboxes){
+        checkbox.addEventListener('click', function (){
+            if(this.checked == true){
+                console.log(this.value);
+                listArray.push(this.value);
+                valueList.innerHTML = text + listArray.join(',');
+            }
+            else {
+                console.log('unchecked')
+            }
+        })
+    }
+
+
+
+  function formExit() {
+    document.getElementById("newForm").remove();
+  }
+
+  function myFunction(id) {
+    if (document.contains(document.getElementById("newForm"))) {
+      document.getElementById("newForm").remove();
+    }
+
+    var d1 = document.getElementById(id);
+    d1.insertAdjacentHTML('afterend',
+      '<form id="newForm" class="form-insert py-2" method="post"> \
+                <div class="d-flex justify-content-between"> \
+                <div><button type="submit" class="btn"><i class="fa fa-check"></i></button>      <button type="button" class="btn" onclick="formExit()""><i class="fa fa-times"></i></button></div></div> \
+                <input type="text" name="name" placeholder="add new tag" class="col-sm-12" maxlength="50" required="" id="id_name"> \
+                <select name="parent" class="d-none" id="id_parentt"> \
+                <option value="' + id + '" selected="' + id + '"></option> \
+                </select> \
+                {% csrf_token %} \
+              </form>');
+
+    //document.querySelector('#id_parentt [value="' + id + '"]').selected = true;
+  }
+
+$('#myForm').trigger("reset");
+</script>
