@@ -2,11 +2,10 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 
 from .models import Posts, Tags
-from .forms import NewTagsForm , NewPostForm
+from .forms import NewTagsForm , NewPostForm , UpdatePostForm
 # Create your views here.
 
 def createPost(request):
-    posts = Posts.objects.all()
     tags = Tags.objects.all()
     post_form = NewPostForm(request.POST or None)
     tag_form = NewTagsForm(request.POST or None)
@@ -39,8 +38,29 @@ def createPost(request):
 
 
 def updatePost(request):
+    posts = Posts.objects.all()
+    tags = Tags.objects.all()
+    tag_form = NewTagsForm(request.POST or None)
+    post_form = NewPostForm(request.POST or None)
+    update_form = UpdatePostForm(request.POST or None)
 
-    context = {}
+
+    if tag_form.is_valid():
+        tag_form.save()
+        return HttpResponseRedirect(request.path_info)
+
+    if request.method == 'POST':
+        tag_data = (request.POST.get('tags')).split(',')
+        tag_data = list(map(int, tag_data))
+        print("::::::::::::::::",tag_data)
+        for x in tag_data:
+            posts = posts.filter(tags__id__exact=x)
+            print("------------------", posts)
+
+
+    context = {'tags': tags, 'posts':posts , 'update_form':update_form}
+
     template = 'pages/update_blog.html'
     return render(request, template, context)
+
 

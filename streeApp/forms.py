@@ -7,8 +7,18 @@ class NewPostForm(forms.ModelForm):
         model = Posts
         #fields = '__all__'
         fields = ('title', 'detail')
+        widgets = {
+            'detail': forms.Textarea(attrs={'class': 'col-md-8  '}),
+        }
 
-
+class UpdatePostForm(forms.ModelForm):
+    class Meta:
+        model = Posts
+        #fields = '__all__'
+        fields = ('title', 'detail')
+        widgets = {
+            'detail': forms.Textarea(attrs={'class': 'col-md-8  '}),
+        }
 
 class NewTagsForm(forms.ModelForm):
     parent = TreeNodeChoiceField(queryset=Tags.objects.all())

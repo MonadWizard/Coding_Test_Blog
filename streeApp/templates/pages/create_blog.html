@@ -1,5 +1,6 @@
 
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
 
@@ -35,6 +36,25 @@
 {#      _________________________________________tag#}
 
         {% load mptt_tags %}
+
+
+{#<ul class="root" >#}
+{#    {% recursetree tags %}#}
+{#        <li id="{{ node.id }}" class="caret">#}
+{##}
+{#            <input type="checkbox" id="valueList" name="{{ node.name }}" value="{{ node.id }}" class="checkbox">#}
+{#            {{ node.level }} {{ node.name }}{{ node.id }}#}
+{#            <button class="btn"  onclick="myFunction({{ node.id }})"><i class="fa fa-plus"></i></button>#}
+{##}
+{#            {% if not node.is_leaf_node %}#}
+{#                <ul class="children nested">#}
+{#                    {{ children }}#}
+{#                </ul>#}
+{#            {% endif %}#}
+{#        </li>#}
+{#    {% endrecursetree %}#}
+{#</ul>#}
+
 
 
 {% recursetree tags %}
