@@ -8,14 +8,14 @@ class NewPostForm(forms.ModelForm):
         #fields = '__all__'
         fields = ('title', 'detail')
         widgets = {
-            'detail': forms.Textarea(attrs={'class': 'col-md-8  '}),
+            'detail': forms.Textarea(attrs={'class': 'col-md-8 '}),
         }
 
 class UpdatePostForm(forms.ModelForm):
     class Meta:
         model = Posts
-        #fields = '__all__'
-        fields = ('title', 'detail')
+        fields = '__all__'
+        #fields = ('title', 'detail')
         widgets = {
             'detail': forms.Textarea(attrs={'class': 'col-md-8  '}),
         }

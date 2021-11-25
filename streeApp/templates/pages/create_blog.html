@@ -1,149 +1,144 @@
-
 {% extends 'base.html' %}
 {% load static %}
 
 {% block content %}
 
-{# <----------create a post------------>#}
+    {# <----------create a post------------>#}
 
 
 
-<br>
-<br>
-<br>
+    <br>
+    <br>
+    <br>
 
 
-<div class="container">
-  <div class="row">
+    <div class="container">
+        <div class="row">
 
-    <div class="col-xs-12 col-sm-6">
-      <div class="box">
+            <div class="col-xs-12 col-sm-6">
+                <div class="box">
 
-          <form method="post">
-              {% csrf_token %}
-              {{ post_form.as_p }}
-{#              <p id="valueList" name="tags"></p>#}
-                <input type="hidden" id="tagss" name="tags" value=""></input>
-              <input type="submit" value="Save">
-          </form>
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ post_form.as_p }}
+                        {#              <p id="valueList" name="tags"></p>#}
+                        <input type="hidden" id="tagss" name="tags" value=""></input>
+                        <p>Must be choose at least 1 tag to create post never create</p>
+                        <input type="submit" value="Save">
+                    </form>
 
-      </div>
-    </div>
+                </div>
+            </div>
 
-    <div class="col-xs-12 col-sm-6">
-      <div class="box">
+            <div class="col-xs-12 col-sm-6">
+                <div class="box">
 
-{#      _________________________________________tag#}
+                    {#      _________________________________________tag#}
 
-        {% load mptt_tags %}
-
-
-{#<ul class="root" >#}
-{#    {% recursetree tags %}#}
-{#        <li id="{{ node.id }}" class="caret">#}
-{##}
-{#            <input type="checkbox" id="valueList" name="{{ node.name }}" value="{{ node.id }}" class="checkbox">#}
-{#            {{ node.level }} {{ node.name }}{{ node.id }}#}
-{#            <button class="btn"  onclick="myFunction({{ node.id }})"><i class="fa fa-plus"></i></button>#}
-{##}
-{#            {% if not node.is_leaf_node %}#}
-{#                <ul class="children nested">#}
-{#                    {{ children }}#}
-{#                </ul>#}
-{#            {% endif %}#}
-{#        </li>#}
-{#    {% endrecursetree %}#}
-{#</ul>#}
+                    {% load mptt_tags %}
 
 
-
-{% recursetree tags %}
-
-    <div id="{{ node.id }}">
-        <input type="checkbox" id="valueList" name="{{ node.name }}" value="{{ node.id }}" class="checkbox">
-        {{ node.level }} {{ node.name }}{{ node.id }}
-        <button class="btn"  onclick="myFunction({{ node.id }})"><i class="fa fa-plus"></i></button>
-    </div>
-{#          <label for="{{ node.id }}"> {{ node.name }} </label><br>#}
+                    {#<ul class="root" >#}
+                    {#    {% recursetree tags %}#}
+                    {#        <li id="{{ node.id }}" class="caret">#}
+                    {##}
+                    {#            <input type="checkbox" id="valueList" name="{{ node.name }}" value="{{ node.id }}" class="checkbox">#}
+                    {#            {{ node.level }} {{ node.name }}{{ node.id }}#}
+                    {#            <button class="btn"  onclick="myFunction({{ node.id }})"><i class="fa fa-plus"></i></button>#}
+                    {##}
+                    {#            {% if not node.is_leaf_node %}#}
+                    {#                <ul class="children nested">#}
+                    {#                    {{ children }}#}
+                    {#                </ul>#}
+                    {#            {% endif %}#}
+                    {#        </li>#}
+                    {#    {% endrecursetree %}#}
+                    {#</ul>#}
 
 
 
-    {% if not node.is_leaf_node %}
-        <div class="children" style="padding-left: 20px">
-        {{ children }}
-        </div>
-    {% endif %}
+                    {% recursetree tags %}
 
-{% endrecursetree %}
-
-
-<script>
-
-    {#checkbox#}
-    var valueList = document.getElementById('valueList');
-    var text = '<span > Tags : </span>';
-    var listArray = []
-
-    var checkboxes = document.querySelectorAll('.checkbox');
-
-    for (var checkbox of checkboxes){
-        checkbox.addEventListener('click', function (){
-            if(this.checked == true){
-                console.log(this.value);
-                console.log(this.name);
-                listArray.push(this.value);
-                valueList.innerHTML = listArray.join(',');
-            }
-            else {
-                console.log('unchecked')
-                listArray = listArray.filter(e => e!==this.value);
-                valueList.innerHTML = listArray.join(',');
-            }
-            {#console.log(valueList)#}
-            console.log(listArray)
-            document.getElementById("tagss").value=listArray
-
-        })
-    }
+                        <div id="{{ node.id }}">
+                            <input type="checkbox" id="valueList" name="{{ node.name }}" value="{{ node.id }}"
+                                   class="checkbox">
+                            {{ node.level }} {{ node.name }}{{ node.id }}
+                            <button class="btn" onclick="myFunction({{ node.id }})"><i class="fa fa-plus"></i></button>
+                        </div>
 
 
+                        {% if not node.is_leaf_node %}
+                            <div class="children" style="padding-left: 20px">
+                                {{ children }}
+                            </div>
+                        {% endif %}
+
+                    {% endrecursetree %}
 
 
+                    <script>
 
-  function formExit() {
-    document.getElementById("newForm").remove();
-  }
+                        {#checkbox#}
+                        var valueList = document.getElementById('valueList');
+                        var text = '<span > Tags : </span>';
+                        var listArray = []
 
-  function myFunction(id) {
-    if (document.contains(document.getElementById("newForm"))) {
-      document.getElementById("newForm").remove();
-    }
+                        var checkboxes = document.querySelectorAll('.checkbox');
 
-    var d1 = document.getElementById(id);
-    d1.insertAdjacentHTML('afterend',
-      '<form id="newForm" class="form-insert py-2" method="post"> \
-                <div class="d-flex justify-content-between"> \
-                <div><button type="submit" class="btn"><i class="fa fa-check"></i></button>      <button type="button" class="btn" onclick="formExit()""><i class="fa fa-times"></i></button></div></div> \
-                <input type="text" name="name" placeholder="add new tag" class="col-sm-12" maxlength="50" required="" id="id_name"> \
-                <select name="parent" class="d-none" id="id_parentt"> \
-                <option value="' + id + '" selected="' + id + '"></option> \
+                        for (var checkbox of checkboxes) {
+                            checkbox.addEventListener('click', function () {
+                                if (this.checked == true) {
+                                    console.log(this.value);
+                                    console.log(this.name);
+                                    listArray.push(this.value);
+                                    valueList.innerHTML = listArray.join(',');
+                                } else {
+                                    console.log('unchecked')
+                                    listArray = listArray.filter(e => e !== this.value);
+                                    valueList.innerHTML = listArray.join(',');
+                                }
+                                {#console.log(valueList)#}
+                                console.log(listArray)
+                                document.getElementById("tagss").value = listArray
+
+                            })
+                        }
+
+
+                        function formExit() {
+                            document.getElementById("newForm").remove();
+                        }
+
+                        function myFunction(id) {
+                            if (document.contains(document.getElementById("newForm"))) {
+                                document.getElementById("newForm").remove();
+                            }
+
+                            var d1 = document.getElementById(id);
+                            d1.insertAdjacentHTML('afterend',
+                                '<form id="newForm" class="form-insert py-2" method="post"> \
+                                          <div class="d-flex justify-content-between"> \
+                                          <div><button type="submit" class="btn"><i class="fa fa-check"></i></button>      <button type="button" class="btn" onclick="formExit()""><i class="fa fa-times"></i></button></div></div> \
+                                          <input type="text" name="name" placeholder="add new tag" class="col-sm-12" maxlength="50" required="" id="id_name"> \
+                                          <select name="parent" class="d-none" id="id_parentt"> \
+                                          <option value="' + id + '" selected="' + id + '"></option> \
                 </select> \
                 {% csrf_token %} \
               </form>');
 
-    //document.querySelector('#id_parentt [value="' + id + '"]').selected = true;
-  }
+                            //document.querySelector('#id_parentt [value="' + id + '"]').selected = true;
+                        }
 
-$('#myForm').trigger("reset");
-</script>
+                        $('#myForm').trigger("reset");
+                    </script>
 
 
-{# ____________________________________________________tag#}
-      </div>
+                    {# ____________________________________________________tag#}
+                </div>
+            </div>
+
+        </div>
     </div>
-
-  </div>
-</div>
 
 
 
