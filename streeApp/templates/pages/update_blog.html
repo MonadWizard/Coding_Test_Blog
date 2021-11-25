@@ -17,6 +17,7 @@
             <div class="col-xs-12 col-sm-6">
                 <div class="box">
 
+                <p>Without ajax can not complete inpage update on Templating</p>
 
                     <div id="demo" class="collapse">
                         <form method="POST">
@@ -26,21 +27,25 @@
                         </form>
 
                     </div>
-
+                <form method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" id="post_id" name="post_id"></input>
                     {% for post in posts %}
                         <a href="{{ post.id }}">{{ post.title }}</a>
 
                         <button class="btn" type="submit" data-toggle="collapse" data-target="#demo"
                                 onclick="menuCollapse('{{ post.id }}')">{{ post.title }}</button>
+
                         <br>
                     {% endfor %}
+                </form>
 
-                    <form method="POST">
-                        {% csrf_token %}
-                        <input type="hidden" id="post_id" name="post_id"></input>
-                        <input type="submit" value="Search">
-
-                    </form>
+{#                    <form method="POST">#}
+{#                        {% csrf_token %}#}
+{#                        <input type="hidden" id="post_id" name="post_id"></input>#}
+{#                        <input type="submit" value="Search">#}
+{##}
+{#                    </form>#}
 
 
                 </div>

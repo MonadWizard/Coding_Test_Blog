@@ -53,7 +53,7 @@ def updatePost(request):
     post_id = request.POST.get('post_id')
     post_idd = 29
     # print("::::::::::::::::",post_id,type(post_id))
-    if post_id ==str(post_id):
+    if post_id == str(post_id) and len(post_id) !=0 :
         post_idd = int(post_id)
         print("::::::::::::::::", post_idd, type(post_idd))
 
@@ -61,8 +61,6 @@ def updatePost(request):
     form = UpdatePostForm(instance=edit_post)
 
     if request.method == "POST":
-        task = request.POST.get('task')
-        # print("printing post : ",request.POST)
         form = UpdatePostForm(request.POST, instance=edit_post)
         if form.is_valid():
             form.save()
